@@ -2,20 +2,40 @@
 <html>
     <head>
         <title>{{title}}</title>
-        <link rel="stylesheet" type="text/css" href="./static/styles/style.css">
+        <style>
+            .error {
+                color: red;
+            }
+        </style>
     </head>
-    <body>
-        <h1>Build-A-Blog!</h1>
+<body>
 
-        <nav>
-            <a href='/blog'>View Blog</a> | 
-            <a href='/newpost'>New Post</a>
-        </nav>
-            
-        <hr />
+    <div>
+        <a href='/logout'>log out</a>
+    </div>
 
-        {% block content %}
-        {% endblock %}
+    <h1>Build-A-Blog!</h1>
 
-    </body>
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        <ul>
+        {% for category,message in messages %}
+            <li class="{{category}}">{{message}}</li>
+        {% endfor %}
+        </ul>
+    {% endwith %}
+
+    <nav>
+        <a href='/blog'>View Blog</a> | 
+        <a href='/newpost'>New Post</a> |
+        <a href='/signup'>Create Account</a> |
+        <a href='/login'>Log in</a> |
+        <a href='/logout'>Log out</a>
+    </nav>
+        
+    <hr />
+
+    {% block content %}
+    {% endblock %}
+
+</body>
 </html>
