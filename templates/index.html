@@ -6,7 +6,7 @@
         <h1>Bloggers</h1>
         <hr>
         {% for user in users %}
-        <p class="users"><a href="/blog?userid={{user.id}}">{{ user.username }}</a></p>
+        <p class="users"><a href="/blog?user={{user.id}}">{{ user.username }}</a></p>
         {% endfor %}
       </div>
 {% endblock %}

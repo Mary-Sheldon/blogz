@@ -32,16 +32,31 @@ class User(db.Model):
         self.username = username
         self.password = password
 
+@app.before_request
+def require_login():
+    allowed_routes = ['login', 'signup', 'show_blog', 'index']
+    if request.endpoint not in allowed_routes and 'username' not in session:
+        return redirect('/login')
 
 @app.route('/')
 def index():
+    if 'user' in request.args:
+        user_id= request.args.get('user')
+        user = User.query.get(user_id)
+        user_blogs = Blog.query.filter_by(owner = user).all()
+        return render_template('singleuser.html', user_blogs=user_blogs)
     users = User.query.all()
     return render_template('index.html', users=users)
 
 @app.route('/blog',methods=['POST','GET'])
 def show_blog():
+    if 'user' in request.args:
+        user_id= request.args.get('user')
+        user = User.query.get(user_id)
+        user_blogs = Blog.query.filter_by(owner = user).all()
+        return render_template('singleuser.html', user_blogs=user_blogs)
 
-    if request.args:
+    if 'id' in request.args:
         blog_id = request.args.get('id')
         blogs = Blog.query.filter_by(id=blog_id).all()
         return render_template('single_post.html', blogs=blogs)
